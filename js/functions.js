@@ -1,7 +1,7 @@
 function getStringLength (string, length) {
   return string.length > length ? 'true' : 'false';
 }
-console.log(getStringLength ("попробовать", 12));
+console.log(getStringLength ('попробовать', 12));
 
 function checkString (string) {
   const normalizedString = string.replaceAll(' ', '').toLowerCase();
