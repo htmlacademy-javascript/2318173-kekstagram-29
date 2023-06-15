@@ -1,7 +1,7 @@
-function getStringLength (string, length) {
+function checkStringLength (string, length) {
   return string.length > length;
 }
-window.console.log(getStringLength ('попробовать', 12));
+window.console.log(checkStringLength ('попробовать', 12));
 
 function isPolindrome (string) {
   const normalizedString = string.replaceAll(' ', '').toLowerCase();
