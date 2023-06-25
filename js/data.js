@@ -40,5 +40,9 @@ const getPhotoObj = (index) => ({
   comments: Array.from({length: getRandomNumberFromRange(0, 30)}, getCommentObj)
 });
 
+const getPhotosData = (num) => {
+  const photos = Array.from({length: num}, (_, index) => getPhotoObj(index + 1));
+  return photos;
+};
 
-export {getPhotoObj};
+export {getPhotosData};
