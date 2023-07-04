@@ -24,11 +24,11 @@ picturesContainer.addEventListener('click', onPicturesContainerClick);
 // const socialComment = document.querySelector('.social__comment');
 // const socialCaption = document.querySelector('.social__caption');
 
-  //   for (let j = 0; j < bigPictureOpen[i].comments.length; j++) {
-  //     const element = socialComment.cloneNode(true);
-  //     element.querySelector('.social__picture').src = bigPictureOpen[i].comments[j].avatar;
-  //     element.querySelector('.social__picture').alt = bigPictureOpen[i].comments[j].name;
-  //     element.querySelector('.social__text').textContent = bigPictureOpen[i].comments[j].message;
-  //     socialComments.appendChild(element);
-  //   }
-  // }
+//   for (let j = 0; j < bigPictureOpen[i].comments.length; j++) {
+//     const element = socialComment.cloneNode(true);
+//     element.querySelector('.social__picture').src = bigPictureOpen[i].comments[j].avatar;
+//     element.querySelector('.social__picture').alt = bigPictureOpen[i].comments[j].name;
+//     element.querySelector('.social__text').textContent = bigPictureOpen[i].comments[j].message;
+//     socialComments.appendChild(element);
+//   }
+
