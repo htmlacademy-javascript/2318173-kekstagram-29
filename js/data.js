@@ -44,3 +44,5 @@ export const getPhotosData = (num) => {
   const photos = Array.from({length: num}, (_, index) => getPhotoObj(index + 1));
   return photos;
 };
+
+export const data = getPhotosData(25);
