@@ -1,5 +1,8 @@
 import {data} from './data.js';
 const picturesContainer = document.querySelector('.pictures');
+const commentsContainer = document.querySelector('.social__comments');
+const socialComment = document.querySelector('.social__comment');
+const comment = document.createDocumentFragment();
 
 function fillBigPicture (photoObj) {
   const bigPicture = document.querySelector('.big-picture');
@@ -8,19 +11,28 @@ function fillBigPicture (photoObj) {
   bigPicture.querySelector('.comments-count').textContent = photoObj.comments.length;
   bigPicture.querySelector('.social__caption').textContent = photoObj.description;
 }
+function fillComments (photoObj) {
+  const element = socialComment.cloneNode (true);
+  element.querySelector('.social__picture').src = photoObj.comments.avatar;
+  element.querySelector('.social__picture').alt = photoObj.comments.name;
+  element.querySelector('.social__text').textContent = photoObj.comments.message;
+  return element;
+}
+
 
 function onPicturesContainerClick(evt) {
   const cardDataId = evt.target.closest('.picture').dataset.id;
 
   const photoData = data.find((element) => element.id === Number(cardDataId));
   fillBigPicture (photoData);
+  data.map(() => {
+    comment.appendChild(fillComments(photoData));
+    commentsContainer.appendChild(comment);
+  });
 }
 
 picturesContainer.addEventListener('click', onPicturesContainerClick);
-// const pictureBig = document.querySelector('.big-picture__img img');
-// const likes = document.querySelector('.likes-count');
-// const comments = document.querySelector('.comments-count');
-// const socialComments = document.querySelector('.social__comments');
+
 // const socialComment = document.querySelector('.social__comment');
 // const socialCaption = document.querySelector('.social__caption');
 
