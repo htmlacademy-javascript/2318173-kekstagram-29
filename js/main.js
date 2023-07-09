@@ -1,5 +1,8 @@
 import {renderPictures} from './pictures.js';
-import {getPhotosData} from './data.js';
-window.console.log(getPhotosData(25));
+import {data} from './data.js';
+import './user-modal.js';
+import './full-pictures.js';
 
-renderPictures(getPhotosData(25));
+// window.console.log(getPhotosData(25));
+
+renderPictures(data);

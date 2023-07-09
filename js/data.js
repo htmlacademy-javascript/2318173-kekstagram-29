@@ -27,7 +27,7 @@ const names = [
 
 const getCommentObj = () => ({
   id: getRandomNumberFromRange(1, 500),
-  avatar: `img/${getRandomNumberFromRange(1, 6)}.svg`,
+  avatar: `img/avatar-${getRandomNumberFromRange(1, 6)}.svg`,
   message: messages[getRandomNumberFromRange(0, messages.length)],
   name: names[getRandomNumberFromRange(0, names.length)]
 });
@@ -40,9 +40,9 @@ const getPhotoObj = (index) => ({
   comments: Array.from({length: getRandomNumberFromRange(0, 30)}, getCommentObj)
 });
 
-const getPhotosData = (num) => {
+export const getPhotosData = (num) => {
   const photos = Array.from({length: num}, (_, index) => getPhotoObj(index + 1));
   return photos;
 };
 
-export {getPhotosData};
+export const data = getPhotosData(25);
