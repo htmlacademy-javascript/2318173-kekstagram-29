@@ -19,12 +19,22 @@ function fillBigPicture (photoObj) {
     .join('');
 }
 
+// function renderComments (el) {
+//   commentsShow += COMMENTS_PER_PORTION;
+//   if (commentsShow >= el.comments.length) {
+//     commentsLoader.classList.add('hidden');
+//     commentsShow = el.comments.length;
+//   }
+//   commentsCount.data = commentsShow;
+// }
+
 function onPicturesContainerClick({target}) {
   const cardDataId = target.closest('.picture').dataset.id;
 
   const photoData = data.find((element) => element.id === Number(cardDataId));
   fillBigPicture (photoData);
 }
+
 
 picturesContainer.addEventListener('click', onPicturesContainerClick);
 
