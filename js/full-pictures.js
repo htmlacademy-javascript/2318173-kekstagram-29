@@ -1,5 +1,11 @@
 import {data} from './data.js';
+
+const COMMENTS_PER_PORTION = 5;
+
 const picturesContainer = document.querySelector('.pictures');
+const commentsCount = document.querySelector('.comments-show');
+const commentsLoader = document.querySelector('.comments-loader');
+let commentsShow = 0;
 
 function createCommentTemplate ({avatar, message, name}) {
   return `<li class="social__comment">
@@ -14,19 +20,10 @@ function fillBigPicture (photoObj) {
   bigPicture.querySelector('.likes-count').textContent = photoObj.likes;
   bigPicture.querySelector('.comments-count').textContent = photoObj.comments.length;
   bigPicture.querySelector('.social__caption').textContent = photoObj.description;
-  bigPicture.querySelector('.social__comments').innerHTML = photoObj.comments
-    .map((value) => createCommentTemplate (value))
+  const commentsData = photoObj.comments.map((value) => createCommentTemplate (value));
+  bigPicture.querySelector('.social__comments').innerHTML = commentsData
     .join('');
 }
-
-// function renderComments (el) {
-//   commentsShow += COMMENTS_PER_PORTION;
-//   if (commentsShow >= el.comments.length) {
-//     commentsLoader.classList.add('hidden');
-//     commentsShow = el.comments.length;
-//   }
-//   commentsCount.data = commentsShow;
-// }
 
 function onPicturesContainerClick({target}) {
   const cardDataId = target.closest('.picture').dataset.id;
