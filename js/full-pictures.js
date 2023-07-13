@@ -3,8 +3,10 @@ import {data} from './data.js';
 const COMMENTS_PER_PORTION = 5;
 
 const picturesContainer = document.querySelector('.pictures');
-const commentsCount = document.querySelector('.comments-show');
-const commentsLoader = document.querySelector('.comments-loader');
+const bigPicture = document.querySelector('.big-picture');
+const commentsContainer = bigPicture.querySelector('.social__comments');
+const commentsCount = bigPicture.querySelector('.comments-show');
+const commentsLoader = bigPicture.querySelector('.comments-loader');
 let commentsShow = 0;
 
 function createCommentTemplate ({avatar, message, name}) {
@@ -14,15 +16,19 @@ function createCommentTemplate ({avatar, message, name}) {
   </li>`;
 }
 
+
 function fillBigPicture (photoObj) {
-  const bigPicture = document.querySelector('.big-picture');
   bigPicture.querySelector('.big-picture__img img').src = photoObj.url;
   bigPicture.querySelector('.likes-count').textContent = photoObj.likes;
   bigPicture.querySelector('.comments-count').textContent = photoObj.comments.length;
   bigPicture.querySelector('.social__caption').textContent = photoObj.description;
   const commentsData = photoObj.comments.map((value) => createCommentTemplate (value));
-  bigPicture.querySelector('.social__comments').innerHTML = commentsData
-    .join('');
+  commentsContainer.innerHTML = commentsData.join('');
+  window.console.log(commentsData.slice(5,commentsData.length));
+}
+
+function selectionOfComments() {
+
 }
 
 function onPicturesContainerClick({target}) {
