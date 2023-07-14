@@ -5,9 +5,11 @@ const COMMENTS_PER_PORTION = 5;
 const picturesContainer = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
 const commentsContainer = bigPicture.querySelector('.social__comments');
+const socialComment = commentsContainer.querySelector('.social__comment');
 const commentsCount = bigPicture.querySelector('.comments-show');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
-let commentsShow = 0;
+let commentsShowNow = COMMENTS_PER_PORTION;
+
 
 function createCommentTemplate ({avatar, message, name}) {
   return `<li class="social__comment">
@@ -24,11 +26,19 @@ function fillBigPicture (photoObj) {
   bigPicture.querySelector('.social__caption').textContent = photoObj.description;
   const commentsData = photoObj.comments.map((value) => createCommentTemplate (value));
   commentsContainer.innerHTML = commentsData.join('');
-  window.console.log(commentsData.slice(5,commentsData.length));
 }
 
-function selectionOfComments() {
-
+function selectionOfComments(commentsArr) {
+  if (commentsArr.length <= 5) {
+    commentsLoader.classList.add('hidden');
+    commentsCount.textContent = commentsArr.length;
+  }
+  for (let i = 0; i <= commentsArr.length; i++) {
+    if (i >= COMMENTS_PER_PORTION) {
+      commentsArr[i].classList.toggle('hidden');
+      commentsCount.textContent = commentsShowNow;
+    }
+  }
 }
 
 function onPicturesContainerClick({target}) {
@@ -36,6 +46,23 @@ function onPicturesContainerClick({target}) {
 
   const photoData = data.find((element) => element.id === Number(cardDataId));
   fillBigPicture (photoData);
+
+  selectionOfComments(commentsContainer.childNodes);
+
+  window.console.log(commentsContainer.querySelectorAll('.hidden'));
+
+  commentsLoader.addEventListener('click', () => {
+    const hiddenComments = commentsContainer.querySelectorAll('.hidden');
+    commentsShowNow = COMMENTS_PER_PORTION;
+    commentsCount.textContent += commentsShowNow;
+    window.console.log(hiddenComments);
+    for (let i = 0; i < COMMENTS_PER_PORTION; i++) {
+      if (i < COMMENTS_PER_PORTION) {
+        socialComment[i].classList.toggle('.hidden');
+      }
+    }
+  });
+
 }
 
 
