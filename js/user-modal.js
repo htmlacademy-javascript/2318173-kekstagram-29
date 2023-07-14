@@ -31,15 +31,15 @@ function closeBigPicture () {
 function openBigPicture () {
   bigPictureModal.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
-  commentsCount.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
+  commentsCount.classList.remove('hidden');
+  commentsLoader.classList.remove('hidden');
 
   document.addEventListener('keydown', onDocumentKeydown);
   bigPictureClose.addEventListener('click', onBigPictureCloseClick);
 }
 
-const onPicturesContainerClick = (evt) => {
-  if (evt.target.closest('.picture')){
+const onPicturesContainerClick = ({target}) => {
+  if (target.closest('.picture')){
     openBigPicture ();
   }
 };
