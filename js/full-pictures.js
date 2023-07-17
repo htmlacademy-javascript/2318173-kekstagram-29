@@ -1,70 +1,97 @@
-import {data} from './data.js';
+
+import { isEscapeKey } from './util.js';
+import { data } from './data.js';
+
+const bigPicture = document.querySelector('.big-picture');
+const commentsLoader = bigPicture.querySelector('.comments-loader');
+const commentsCounter = bigPicture.querySelector('.social__comment-count');
+const bigPictureModal = document.querySelector('.big-picture');
+const picturesContainer = document.querySelector('.pictures');
+const bigPictureClose = bigPictureModal.querySelector('.big-picture__cancel');
 
 const COMMENTS_PER_PORTION = 5;
+let loadingStep = 1;
 
-const picturesContainer = document.querySelector('.pictures');
-const bigPicture = document.querySelector('.big-picture');
-const commentsContainer = bigPicture.querySelector('.social__comments');
-const socialComment = commentsContainer.querySelector('.social__comment');
-const commentsCount = bigPicture.querySelector('.comments-show');
-const commentsLoader = bigPicture.querySelector('.comments-loader');
-let commentsShowNow = COMMENTS_PER_PORTION;
+const onDocumentKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeBigPicture();
+  }
+};
 
+const onBigPictureCloseClick = () => {
+  closeBigPicture();
+};
 
-function createCommentTemplate ({avatar, message, name}) {
-  return `<li class="social__comment">
-    <img class="social__picture" src="${avatar}" alt="${name}" width="35" height="35">
-    <p class="social__text">${message}</p>
+const renderCommentsList = (comments) => {
+  bigPicture.querySelector('.social__comments').innerHTML = comments
+    .map((value) => createCommentTemplate(value))
+    .join('');
+};
+
+const renderCommentsCounter = (loadedComments, totalComments) => {
+  commentsCounter.textContent = `${loadedComments} из ${totalComments} комментариев`;
+
+  if (loadedComments === totalComments) {
+    commentsLoader.classList.add('hidden');
+  } else {
+    commentsLoader.classList.remove('hidden');
+  }
+};
+
+const onCommentsLoaderClick = () => {
+  loadingStep = loadingStep + 1;
+  const comments = JSON.parse(bigPicture.dataset.comments);
+  const restComments = comments.slice(0, loadingStep * COMMENTS_PER_PORTION);
+  renderCommentsList(restComments);
+  renderCommentsCounter(restComments.length, comments.length);
+};
+
+function openBigPicture() {
+  bigPictureModal.classList.remove('hidden');
+  document.querySelector('body').classList.add('modal-open');
+
+  document.addEventListener('keydown', onDocumentKeydown);
+  bigPictureClose.addEventListener('click', onBigPictureCloseClick);
+  commentsLoader.addEventListener('click', onCommentsLoaderClick);
+}
+
+function closeBigPicture() {
+  bigPictureModal.classList.add('hidden');
+  document.querySelector('body').classList.remove('modal-open');
+
+  document.removeEventListener('keydown', onDocumentKeydown);
+  bigPictureClose.removeEventListener('click', onBigPictureCloseClick);
+  commentsLoader.removeEventListener('click', onCommentsLoaderClick);
+}
+
+const onPicturesContainerClick = ({ target }) => {
+  if (!target.closest('.picture')) {
+    return;
+  }
+  const cardDataId = target.closest('.picture').dataset.id;
+  const photoData = data.find((element) => element.id === Number(cardDataId));
+  fillBigPicture(photoData);
+  openBigPicture();
+};
+
+function createCommentTemplate({ avatar, message, name }) {
+  return `<li class='social__comment'>
+    <img class='social__picture' src='${avatar}' alt='${name}' width='35' height='35'>
+    <p class='social__text'>${message}</p>
   </li>`;
 }
 
+function fillBigPicture({ url, likes, comments, description }) {
+  bigPicture.querySelector('.big-picture__img img').src = url;
+  bigPicture.querySelector('.likes-count').textContent = likes;
+  bigPicture.querySelector('.social__caption').textContent = description;
+  bigPicture.dataset.comments = JSON.stringify(comments);
 
-function fillBigPicture (photoObj) {
-  bigPicture.querySelector('.big-picture__img img').src = photoObj.url;
-  bigPicture.querySelector('.likes-count').textContent = photoObj.likes;
-  bigPicture.querySelector('.comments-count').textContent = photoObj.comments.length;
-  bigPicture.querySelector('.social__caption').textContent = photoObj.description;
-  const commentsData = photoObj.comments.map((value) => createCommentTemplate (value));
-  commentsContainer.innerHTML = commentsData.join('');
+  loadingStep = 1;
+  const initialComments = comments.slice(0, COMMENTS_PER_PORTION);
+  renderCommentsList(initialComments);
+  renderCommentsCounter(initialComments.length, comments.length);
 }
-
-function selectionOfComments(commentsArr) {
-  if (commentsArr.length <= 5) {
-    commentsLoader.classList.add('hidden');
-    commentsCount.textContent = commentsArr.length;
-  }
-  for (let i = 0; i <= commentsArr.length; i++) {
-    if (i >= COMMENTS_PER_PORTION) {
-      commentsArr[i].classList.toggle('hidden');
-      commentsCount.textContent = commentsShowNow;
-    }
-  }
-}
-
-function onPicturesContainerClick({target}) {
-  const cardDataId = target.closest('.picture').dataset.id;
-
-  const photoData = data.find((element) => element.id === Number(cardDataId));
-  fillBigPicture (photoData);
-
-  selectionOfComments(commentsContainer.childNodes);
-
-  window.console.log(commentsContainer.querySelectorAll('.hidden'));
-
-  commentsLoader.addEventListener('click', () => {
-    const hiddenComments = commentsContainer.querySelectorAll('.hidden');
-    commentsShowNow = COMMENTS_PER_PORTION;
-    commentsCount.textContent += commentsShowNow;
-    window.console.log(hiddenComments);
-    for (let i = 0; i < COMMENTS_PER_PORTION; i++) {
-      if (i < COMMENTS_PER_PORTION) {
-        socialComment[i].classList.toggle('.hidden');
-      }
-    }
-  });
-
-}
-
 
 picturesContainer.addEventListener('click', onPicturesContainerClick);
-
