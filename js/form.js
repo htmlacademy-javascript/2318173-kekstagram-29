@@ -1,5 +1,6 @@
-import {showAlertError, showAlert, isEscapeKey} from './util.js';
+import {isEscapeKey} from './util.js';
 import { sendData } from './api.js';
+import { showBooklet} from './booklet.js';
 
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadInput = document.querySelector('.img-upload__input');
@@ -93,8 +94,8 @@ const onUploadFormSubmit = (evt) => {
     blockUploadSubmit();
     const formData = new FormData(uploadForm);
     sendData(formData)
-      .then(() => showAlert('Данные отправлены'))
-      .catch(() => showAlertError('Данные не отправлены. Попробуйте снова'))
+      .then(showBooklet('success'))
+      .catch(showBooklet('error'))
       .finally(unblockUploadSubmit);
     closeModal ();
   }

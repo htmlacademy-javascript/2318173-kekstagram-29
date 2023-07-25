@@ -4,13 +4,11 @@ import {showAlertError} from './util.js';
 
 let dataPhotos = null;
 
-getData()
-  .then((data) => {
-    dataPhotos = data;
-  })
-  .then(() => {
-    renderPictures(dataPhotos);
-  })
-  .catch(() => showAlertError('Данные не загружены. Попробуйте обновить страницу'));
+try {
+  dataPhotos = await getData();
+  renderPictures(dataPhotos);
+} catch{
+  showAlertError('Данные не загружены. Попробуйте обновить страницу');
+}
 
 export { dataPhotos };
