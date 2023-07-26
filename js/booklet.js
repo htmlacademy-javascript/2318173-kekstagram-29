@@ -1,5 +1,8 @@
+import {isEscapeKey} from './util.js';
+
 const errorBooklet = document.querySelector('#error').content.querySelector('.error');
 const successBooklet = document.querySelector('#success').content.querySelector('.success');
+const body = document.querySelector('body');
 
 function renderBooklet() {
   const popupContainer = document.querySelector('main');
@@ -14,9 +17,28 @@ function renderBooklet() {
 renderBooklet();
 
 export function showBooklet(cls) {
-  document.querySelector(`.${cls}`).classList.remove('hidden');
-}
+  const booklet = body.querySelector(`.${cls}`);
+  const closeButton = booklet.querySelector(`.${cls}__button`);
+  booklet.classList.remove('hidden');
+  const onDocumentKeydown = (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      closePopup();
+    }
+  };
 
-export function hideBooklet(cls) {
-  document.querySelector(`.${cls}`).classList.add('hidden');
+  const oncloseButtonClick = () => {
+    closePopup();
+  };
+
+
+  document.addEventListener('keydown', onDocumentKeydown);
+  closeButton.addEventListener('click', oncloseButtonClick);
+
+
+  function closePopup () {
+    body.querySelector(`.${cls}`).classList.add('hidden');
+    document.removeEventListener('keydown', onDocumentKeydown);
+    closeButton.removeEventListener('click', oncloseButtonClick);
+  }
 }

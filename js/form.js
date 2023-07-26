@@ -1,6 +1,6 @@
 import {isEscapeKey} from './util.js';
 import { sendData } from './api.js';
-import { showBooklet} from './booklet.js';
+import {showBooklet} from './booklet.js';
 
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadInput = document.querySelector('.img-upload__input');
@@ -87,18 +87,25 @@ textDescription.addEventListener('keydown', (evt) => {
     evt.stopPropagation();
   }
 });
+const uploadFormData = async () => {
+  try {
+    const formData = new FormData(uploadForm);
+    blockUploadSubmit();
+    await sendData(formData);
+    unblockUploadSubmit();
+    showBooklet('success');
+    closeModal ();
+  } catch {
+    showBooklet('error');
+  }
+};
 
 const onUploadFormSubmit = (evt) => {
   evt.preventDefault();
-  if (pristine.validate()) {
-    blockUploadSubmit();
-    const formData = new FormData(uploadForm);
-    sendData(formData)
-      .then(showBooklet('success'))
-      .catch(showBooklet('error'))
-      .finally(unblockUploadSubmit);
-    closeModal ();
+  if (!pristine.validate()) {
+    return;
   }
+  uploadFormData ();
 };
 
 pristine.addValidator(textHashtags, hasValidCount, errorText.INVALID_COUNT,3,true);
