@@ -47,7 +47,7 @@ const onCommentsLoaderClick = () => {
   renderCommentsCounter(restComments.length, comments.length);
 };
 
-function openBigPicture() {
+function bigPictureOpen() {
   bigPictureModal.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
 
@@ -72,7 +72,7 @@ const onPicturesContainerClick = ({ target }) => {
   const cardDataId = target.closest('.picture').dataset.id;
   const photoData = dataPhotos.find((element) => element.id === Number(cardDataId));
   fillBigPicture(photoData);
-  openBigPicture();
+  bigPictureOpen();
 };
 
 function createCommentTemplate({ avatar, message, name }) {

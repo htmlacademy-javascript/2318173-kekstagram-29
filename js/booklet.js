@@ -2,7 +2,7 @@ import {isEscapeKey} from './util.js';
 
 const errorBooklet = document.querySelector('#error').content.querySelector('.error');
 const successBooklet = document.querySelector('#success').content.querySelector('.success');
-const body = document.querySelector('body');
+const bodyElement = document.querySelector('body');
 
 function renderBooklet() {
   const popupContainer = document.querySelector('main');
@@ -17,7 +17,7 @@ function renderBooklet() {
 renderBooklet();
 
 export function showBooklet(cls) {
-  const booklet = body.querySelector(`.${cls}`);
+  const booklet = bodyElement.querySelector(`.${cls}`);
   const closeButton = booklet.querySelector(`.${cls}__button`);
   booklet.classList.remove('hidden');
   const onDocumentKeydown = (evt) => {
@@ -37,7 +37,7 @@ export function showBooklet(cls) {
 
 
   function closePopup () {
-    body.querySelector(`.${cls}`).classList.add('hidden');
+    bodyElement.querySelector(`.${cls}`).classList.add('hidden');
     document.removeEventListener('keydown', onDocumentKeydown);
     closeButton.removeEventListener('click', oncloseButtonClick);
   }
