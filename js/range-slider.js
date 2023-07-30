@@ -62,6 +62,12 @@ const valueScale = document.querySelector('.scale__control--value');
 
 const image = document.querySelector('.img-upload__preview img');
 
+export const resetDefault = () => {
+  rangesSliderContainer.classList.add('hidden');
+  valueScale.value = '100%';
+  image.style.cssText = 'transform: scale(1); filter: none';
+};
+
 smaller.addEventListener('click', () => {
   const value = parseInt(valueScale.value, 10);
   if (value > 25) {
@@ -78,16 +84,16 @@ bigger.addEventListener('click', () => {
   }
 });
 
-function showRangeSlider () {
+const showRangeSlider = () => {
   rangesSliderContainer.classList.remove('hidden');
-}
+};
 
-function hideRangeSlider () {
+const hideRangeSlider = () => {
   rangesSliderContainer.classList.add('hidden');
-}
+};
 hideRangeSlider ();
 
-function updateSlider () {
+const updateSlider = () => {
   rangesSlider.noUiSlider.updateOptions({
     range: {
       min: currentEffect.min,
@@ -96,9 +102,9 @@ function updateSlider () {
     step: currentEffect.step,
     start: currentEffect.max
   });
-}
+};
 
-function onEffectsListClick(evt) {
+const onEffectsListClick = (evt) => {
   if (evt.target.classList.contains('effects__radio')) {
     currentEffect = EFFECTS.find((effect) =>effect.name === evt.target.value);
     image.className = `img-upload__preview effects__preview--${currentEffect.name}`;
@@ -111,9 +117,9 @@ function onEffectsListClick(evt) {
       showRangeSlider();
     }
   }
-}
+};
 
-function onRangeSliderUpdate () {
+const onRangeSliderUpdate = () => {
   const rangesSliderValue = rangesSlider.noUiSlider.get();
   rangesSliderInput.value = rangesSliderValue;
   image.style.filter = `${currentEffect.style}(${rangesSliderValue}${currentEffect.unit})`;
@@ -121,7 +127,7 @@ function onRangeSliderUpdate () {
   if (currentEffect.name === 'none') {
     image.style.filter = DEFAULT_EFFECT.style;
   }
-}
+};
 
 noUiSlider.create(rangesSlider, {
   range: {

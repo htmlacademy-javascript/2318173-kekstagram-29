@@ -1,6 +1,7 @@
 import {isEscapeKey} from './util.js';
 import { sendData } from './api.js';
 import {showBooklet} from './booklet.js';
+import {resetDefault} from './range-slider.js';
 
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadInput = document.querySelector('.img-upload__input');
@@ -32,6 +33,7 @@ const closeModal = () => {
   bodyElement.classList.remove('.modal-open');
 
   uploadInput.value = '';
+  resetDefault();
 
   document.removeEventListener('keydown', onDocumentKeydown);
   textHashtags.removeEventListener('keydown', onFormFieldKeydown);
@@ -47,13 +49,13 @@ const openModal = () => {
   textDescription.addEventListener('keydown', onFormFieldKeydown);
 };
 
-function blockUploadSubmit() {
+const blockUploadSubmit = () => {
   uploadSubmit.disabled = true;
-}
+};
 
-function unblockUploadSubmit() {
+const unblockUploadSubmit = () => {
   uploadSubmit.disabled = false;
-}
+};
 
 const normalizeTags = (tagString) => tagString.trim().split(' ').filter((tag) => Boolean(tag.length));
 const hasValidTags = (value) => normalizeTags(value).every((tag) => ALLOWED_SYMBOLS.test(tag));
