@@ -26,12 +26,7 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-const cleanDescription = () => {
-  textDescription.value = '';
-};
-
 const closeModal = () => {
-  cleanDescription();
   uploadForm.reset();
   pristine.reset();
   uploadOverlay.classList.add('hidden');
@@ -48,7 +43,6 @@ const openModal = () => {
   bodyElement.classList.add('modal-open');
   uploadCancel.addEventListener('click', closeModal);
   document.addEventListener('keydown', onDocumentKeydown);
-  cleanDescription();
 };
 
 const blockUploadSubmit = () => {
@@ -72,7 +66,6 @@ const cancelCloseModal = () => document.activeElement === textHashtags || docume
 export function onDocumentKeydown (evt) {
   if (isEscapeKey(evt) && !cancelCloseModal()) {
     evt.preventDefault();
-    textDescription.value = '';
     closeModal();
   }
 }
@@ -85,7 +78,6 @@ const uploadFormData = async () => {
     unblockUploadSubmit();
     showBooklet('success');
     closeModal ();
-    textDescription.value = '';
   } catch {
     unblockUploadSubmit();
     showBooklet('error');
