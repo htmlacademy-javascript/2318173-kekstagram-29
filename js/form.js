@@ -26,27 +26,29 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
+const cleanDescription = () => {
+  textDescription.value = '';
+};
+
 const closeModal = () => {
+  cleanDescription();
   uploadForm.reset();
   pristine.reset();
   uploadOverlay.classList.add('hidden');
-  bodyElement.classList.remove('.modal-open');
+  bodyElement.classList.remove('modal-open');
 
   uploadInput.value = '';
   resetDefault();
 
   document.removeEventListener('keydown', onDocumentKeydown);
-  textHashtags.removeEventListener('keydown', onFormFieldKeydown);
-  textDescription.removeEventListener('keydown', onFormFieldKeydown);
 };
 
 const openModal = () => {
   uploadOverlay.classList.remove('hidden');
-  bodyElement.classList.add('.modal-open');
+  bodyElement.classList.add('modal-open');
   uploadCancel.addEventListener('click', closeModal);
   document.addEventListener('keydown', onDocumentKeydown);
-  textHashtags.addEventListener('keydown', onFormFieldKeydown);
-  textDescription.addEventListener('keydown', onFormFieldKeydown);
+  cleanDescription();
 };
 
 const blockUploadSubmit = () => {
@@ -65,30 +67,16 @@ const hasUniqueTags = (value) => {
   return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
 
+const cancelCloseModal = () => document.activeElement === textHashtags || document.activeElement === textDescription;
 
-function onFormFieldKeydown(evt) {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-}
-
-function onDocumentKeydown (evt) {
-  if (isEscapeKey(evt)) {
+export function onDocumentKeydown (evt) {
+  if (isEscapeKey(evt) && !cancelCloseModal()) {
     evt.preventDefault();
+    textDescription.value = '';
     closeModal();
   }
 }
 
-textHashtags.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-});
-textDescription.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-});
 const uploadFormData = async () => {
   try {
     const formData = new FormData(uploadForm);
@@ -97,9 +85,11 @@ const uploadFormData = async () => {
     unblockUploadSubmit();
     showBooklet('success');
     closeModal ();
+    textDescription.value = '';
   } catch {
     unblockUploadSubmit();
     showBooklet('error');
+    document.removeEventListener('keydown', onDocumentKeydown);
   }
 };
 
