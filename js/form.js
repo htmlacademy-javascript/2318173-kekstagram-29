@@ -1,6 +1,7 @@
 import {isEscapeKey} from './util.js';
 import { sendData } from './api.js';
 import {showBooklet} from './booklet.js';
+import {resetDefault} from './range-slider.js';
 
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadInput = document.querySelector('.img-upload__input');
@@ -29,31 +30,28 @@ const closeModal = () => {
   uploadForm.reset();
   pristine.reset();
   uploadOverlay.classList.add('hidden');
-  bodyElement.classList.remove('.modal-open');
+  bodyElement.classList.remove('modal-open');
 
   uploadInput.value = '';
+  resetDefault();
 
   document.removeEventListener('keydown', onDocumentKeydown);
-  textHashtags.removeEventListener('keydown', onFormFieldKeydown);
-  textDescription.removeEventListener('keydown', onFormFieldKeydown);
 };
 
 const openModal = () => {
   uploadOverlay.classList.remove('hidden');
-  bodyElement.classList.add('.modal-open');
+  bodyElement.classList.add('modal-open');
   uploadCancel.addEventListener('click', closeModal);
   document.addEventListener('keydown', onDocumentKeydown);
-  textHashtags.addEventListener('keydown', onFormFieldKeydown);
-  textDescription.addEventListener('keydown', onFormFieldKeydown);
 };
 
-function blockUploadSubmit() {
+const blockUploadSubmit = () => {
   uploadSubmit.disabled = true;
-}
+};
 
-function unblockUploadSubmit() {
+const unblockUploadSubmit = () => {
   uploadSubmit.disabled = false;
-}
+};
 
 const normalizeTags = (tagString) => tagString.trim().split(' ').filter((tag) => Boolean(tag.length));
 const hasValidTags = (value) => normalizeTags(value).every((tag) => ALLOWED_SYMBOLS.test(tag));
@@ -63,30 +61,15 @@ const hasUniqueTags = (value) => {
   return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
 
+const cancelCloseModal = () => document.activeElement === textHashtags || document.activeElement === textDescription;
 
-function onFormFieldKeydown(evt) {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-}
-
-function onDocumentKeydown (evt) {
-  if (isEscapeKey(evt)) {
+export function onDocumentKeydown (evt) {
+  if (isEscapeKey(evt) && !cancelCloseModal()) {
     evt.preventDefault();
     closeModal();
   }
 }
 
-textHashtags.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-});
-textDescription.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-});
 const uploadFormData = async () => {
   try {
     const formData = new FormData(uploadForm);
@@ -98,6 +81,7 @@ const uploadFormData = async () => {
   } catch {
     unblockUploadSubmit();
     showBooklet('error');
+    document.removeEventListener('keydown', onDocumentKeydown);
   }
 };
 

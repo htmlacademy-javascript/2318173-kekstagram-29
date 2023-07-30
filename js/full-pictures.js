@@ -4,7 +4,8 @@ import { dataPhotos } from './load.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
-const commentsCounter = bigPicture.querySelector('.social__comment-count');
+const commentsCount = bigPicture.querySelector('.comments-count');
+const commentsShow = bigPicture.querySelector('.comments-show');
 const bigPictureModal = document.querySelector('.big-picture');
 const picturesContainer = document.querySelector('.pictures');
 const bigPictureClose = bigPictureModal.querySelector('.big-picture__cancel');
@@ -30,8 +31,8 @@ const renderCommentsList = (comments) => {
 };
 
 const renderCommentsCounter = (loadedComments, totalComments) => {
-  commentsCounter.textContent = `${loadedComments} из ${totalComments} комментариев`;
-
+  commentsCount.textContent = `${totalComments}`;
+  commentsShow.textContent = `${loadedComments}`;
   if (loadedComments === totalComments) {
     commentsLoader.classList.add('hidden');
   } else {

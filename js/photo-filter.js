@@ -42,12 +42,10 @@ function onFilterClick(evt) {
   renderPicturesWithDebounce(pictures);
 }
 
-function initializeFilters() {
+export function initializeFilters() {
   imageFilter.classList.remove('img-filters--inactive');
 
   filterDefaultButten.addEventListener('click', onFilterClick);
   filterRandomButten.addEventListener('click', onFilterClick);
   filterDiscussedButten.addEventListener('click', onFilterClick);
 }
-
-initializeFilters();
