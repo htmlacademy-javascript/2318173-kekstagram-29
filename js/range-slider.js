@@ -49,6 +49,8 @@ const EFFECTS = [
   }
 ];
 const DEFAULT_EFFECT = EFFECTS[0];
+const MAX_PHOTO_SIZE = 100;
+const MIN_PHOTO_SIZE = 25;
 let currentEffect = DEFAULT_EFFECT;
 
 const rangesSliderContainer = document.querySelector('.effect-level');
@@ -70,7 +72,7 @@ export const resetDefault = () => {
 
 smaller.addEventListener('click', () => {
   const value = parseInt(valueScale.value, 10);
-  if (value > 25) {
+  if (value > MIN_PHOTO_SIZE) {
     valueScale.value = `${value - 25}%`;
     image.style.cssText += `transform: scale(${parseInt(valueScale.value, 10) / 100})`;
   }
@@ -78,7 +80,7 @@ smaller.addEventListener('click', () => {
 
 bigger.addEventListener('click', () => {
   const value = parseInt(valueScale.value, 10);
-  if (value < 100) {
+  if (value < MAX_PHOTO_SIZE) {
     valueScale.value = `${value + 25}%`;
     image.style.cssText += `transform: scale(${parseInt(valueScale.value, 10) / 100})`;
   }
