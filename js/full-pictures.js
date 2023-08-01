@@ -1,3 +1,4 @@
+const COMMENTS_PER_PORTION = 5;
 
 import { isEscapeKey } from './util.js';
 import { dataPhotos } from './load.js';
@@ -10,7 +11,6 @@ const bigPictureModal = document.querySelector('.big-picture');
 const picturesContainer = document.querySelector('.pictures');
 const bigPictureClose = bigPictureModal.querySelector('.big-picture__cancel');
 
-const COMMENTS_PER_PORTION = 5;
 let loadingStep = 1;
 
 const onDocumentKeydown = (evt) => {
