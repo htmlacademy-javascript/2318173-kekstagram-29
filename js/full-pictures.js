@@ -1,7 +1,8 @@
-const COMMENTS_PER_PORTION = 5;
-
 import { isEscapeKey } from './util.js';
 import { dataPhotos } from './load.js';
+
+const COMMENTS_PER_PORTION = 5;
+const STEP = 1;
 
 const bigPicture = document.querySelector('.big-picture');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
@@ -10,8 +11,6 @@ const commentsShow = bigPicture.querySelector('.comments-show');
 const bigPictureModal = document.querySelector('.big-picture');
 const picturesContainer = document.querySelector('.pictures');
 const bigPictureClose = bigPictureModal.querySelector('.big-picture__cancel');
-
-const STEP = 1;
 
 let loadingStep;
 
@@ -50,7 +49,7 @@ const onCommentsLoaderClick = () => {
   renderCommentsCounter(restComments.length, comments.length);
 };
 
-function bigPictureOpen() {
+function openBigPicture () {
   bigPictureModal.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
 
@@ -75,7 +74,7 @@ const onPicturesContainerClick = ({ target }) => {
   const cardDataId = target.closest('.picture').dataset.id;
   const photoData = dataPhotos.find((element) => element.id === Number(cardDataId));
   fillBigPicture(photoData);
-  bigPictureOpen();
+  openBigPicture();
 };
 
 function createCommentTemplate({ avatar, message, name }) {
