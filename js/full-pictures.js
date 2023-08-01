@@ -11,7 +11,9 @@ const bigPictureModal = document.querySelector('.big-picture');
 const picturesContainer = document.querySelector('.pictures');
 const bigPictureClose = bigPictureModal.querySelector('.big-picture__cancel');
 
-let loadingStep = 1;
+const STEP = 1;
+
+let loadingStep;
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -41,7 +43,7 @@ const renderCommentsCounter = (loadedComments, totalComments) => {
 };
 
 const onCommentsLoaderClick = () => {
-  loadingStep = loadingStep + 1;
+  loadingStep += STEP;
   const comments = JSON.parse(bigPicture.dataset.comments);
   const restComments = comments.slice(0, loadingStep * COMMENTS_PER_PORTION);
   renderCommentsList(restComments);
