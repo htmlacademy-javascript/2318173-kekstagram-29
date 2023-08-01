@@ -1,6 +1,6 @@
 const MAX_HASHTAG_COUNT = 5;
 const ALLOWED_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
-const errorText = {
+const ErrorText = {
   INVALID_COUNT: `Максимум ${MAX_HASHTAG_COUNT} хэштегов`,
   NOT_UNIQUE: 'Хэштеги должны быть уникальными',
   INVALID_PATTERN: 'Неправильный хэштег',
@@ -98,9 +98,9 @@ const onUploadFormSubmit = (evt) => {
   uploadFormData ();
 };
 
-pristine.addValidator(textHashtags, hasValidCount, errorText.INVALID_COUNT,TERTIARY_PRIORITY,true);
-pristine.addValidator(textHashtags, hasUniqueTags, errorText.NOT_UNIQUE,TOP_PRIORITY,true);
-pristine.addValidator(textHashtags, hasValidTags, errorText.INVALID_PATTERN,SECONDARY_PRIORITY,true);
+pristine.addValidator(textHashtags, hasValidCount, ErrorText.INVALID_COUNT,TERTIARY_PRIORITY,true);
+pristine.addValidator(textHashtags, hasUniqueTags, ErrorText.NOT_UNIQUE,TOP_PRIORITY,true);
+pristine.addValidator(textHashtags, hasValidTags, ErrorText.INVALID_PATTERN,SECONDARY_PRIORITY,true);
 
 uploadForm.addEventListener('submit', onUploadFormSubmit);
 
