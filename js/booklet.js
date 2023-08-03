@@ -3,12 +3,12 @@ import {isEscapeKey} from './util.js';
 const popupContainer = document.querySelector('main');
 let booklet;
 
-export const isErrorCls = () => document.querySelector('.error');
+const isErrorCls = () => document.querySelector('.error');
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closePopup(evt);
+    closePopup();
   }
 };
 
@@ -18,7 +18,7 @@ function closePopup () {
 }
 
 const onBookletClick = (evt, cls) => {
-  const classList = evt.target.classList;
+  const {classList} = evt.target;
   if (classList.contains(`${cls}__inner`) || classList.contains(`${cls}__title`)) {
     return;
   }
@@ -29,7 +29,7 @@ const onCloseButtonClick = () => {
   closePopup();
 };
 
-export function showBooklet(cls) {
+function showBooklet(cls) {
   booklet = document.querySelector(`#${cls}`).cloneNode(true).content.querySelector(`.${cls}`);
   popupContainer.insertAdjacentElement('afterbegin', booklet);
   booklet.classList.remove('hidden');
@@ -41,3 +41,4 @@ export function showBooklet(cls) {
   booklet.addEventListener('click',(e) => onBookletClick (e, cls));
 }
 
+export {isErrorCls, showBooklet};
