@@ -1,24 +1,25 @@
+import {isEscapeKey} from './util.js';
+import {sendData} from './api.js';
+import {showBooklet, isErrorCls} from './booklet.js';
+import {resetDefault} from './range-slider.js';
+
+const TOP_PRIORITY = 1;
+const SECONDARY_PRIORITY = 2;
+const TERTIARY_PRIORITY = 3;
+
 const MAX_HASHTAG_COUNT = 5;
 const ALLOWED_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+
 const ErrorText = {
   INVALID_COUNT: `Максимум ${MAX_HASHTAG_COUNT} хэштегов`,
   NOT_UNIQUE: 'Хэштеги должны быть уникальными',
   INVALID_PATTERN: 'Неправильный хэштег',
 };
 
-const TOP_PRIORITY = 1;
-const SECONDARY_PRIORITY = 2;
-const TERTIARY_PRIORITY = 3;
-
-import {isEscapeKey} from './util.js';
-import {sendData} from './api.js';
-import {showBooklet, isErrorCls} from './booklet.js';
-import {resetDefault} from './range-slider.js';
-
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadInput = document.querySelector('.img-upload__input');
 const uploadSubmit = document.querySelector('.img-upload__submit');
-const body = document.querySelector('body');
+const body = document.body;
 const uploadCancel = document.querySelector('.img-upload__cancel');
 const textHashtags = uploadOverlay.querySelector('.text__hashtags');
 const textDescription = uploadOverlay.querySelector('.text__description');
@@ -30,7 +31,7 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error',
 });
 
-const modalCloseHandler = () => {
+const onUploadCancleClick = () => {
   uploadForm.reset();
   pristine.reset();
   uploadOverlay.classList.add('hidden');
@@ -42,10 +43,10 @@ const modalCloseHandler = () => {
   document.removeEventListener('keydown', onDocumentKeydown);
 };
 
-const modalOpenHandler = () => {
+const onUploadInputChange = () => {
   uploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
-  uploadCancel.addEventListener('click', modalCloseHandler);
+  uploadCancel.addEventListener('click', onUploadCancleClick);
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
@@ -67,11 +68,11 @@ const hasUniqueTags = (value) => {
 
 const cancelCloseModal = () => document.activeElement === textHashtags || document.activeElement === textDescription;
 
-export function onDocumentKeydown (evt) {
+function onDocumentKeydown (evt) {
   if (isEscapeKey(evt) && !cancelCloseModal()) {
     evt.preventDefault();
     if (!isErrorCls()) {
-      modalCloseHandler();
+      onUploadCancleClick();
     }
   }
 }
@@ -83,7 +84,7 @@ const uploadFormData = async () => {
     await sendData(formData);
     unblockUploadSubmit();
     showBooklet('success');
-    modalCloseHandler ();
+    onUploadCancleClick ();
   } catch {
     unblockUploadSubmit();
     showBooklet('error');
@@ -104,4 +105,6 @@ pristine.addValidator(textHashtags, hasValidTags, ErrorText.INVALID_PATTERN,SECO
 
 uploadForm.addEventListener('submit', onUploadFormSubmit);
 
-uploadInput.addEventListener('change', modalOpenHandler);
+uploadInput.addEventListener('change', onUploadInputChange);
+
+export {onDocumentKeydown};

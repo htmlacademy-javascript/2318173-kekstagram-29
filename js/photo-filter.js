@@ -1,7 +1,6 @@
 import { dataPhotos } from './load.js';
 import {renderPicturesWithDebounce} from './pictures.js';
 
-
 const filterDefaultButton = document.querySelector('#filter-default');
 const filterRandomButton = document.querySelector('#filter-random');
 const filterDiscussedButton = document.querySelector('#filter-discussed');
@@ -18,9 +17,10 @@ const getRandomPhotos = (data) => {
   return data.slice(0, 10);
 };
 
-function getDiscussedPhotosFirst (data) {
-  return data.sort((a, b) => b.comments.length - a.comments.length);
-}
+const getDiscussedPhotosFirst = (data) => {
+  const sortData = data.sort((a, b) => b.comments.length - a.comments.length);
+  return sortData;
+};
 
 const getFilterData = (id)=> {
   const idToFilter = {
@@ -42,10 +42,12 @@ const onFilterClick = (evt) => {
   renderPicturesWithDebounce(pictures);
 };
 
-export const initializeFilters = () => {
+const initializeFilters = () => {
   imageFilter.classList.remove('img-filters--inactive');
 
   filterDefaultButton.addEventListener('click', onFilterClick);
   filterRandomButton.addEventListener('click', onFilterClick);
   filterDiscussedButton.addEventListener('click', onFilterClick);
 };
+
+export {initializeFilters};

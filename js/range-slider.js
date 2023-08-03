@@ -1,3 +1,6 @@
+const MAX_PHOTO_SIZE = 100;
+const MIN_PHOTO_SIZE = 25;
+
 const EFFECTS = [
   {
     name: 'none',
@@ -49,9 +52,6 @@ const EFFECTS = [
   }
 ];
 const DEFAULT_EFFECT = EFFECTS[0];
-const MAX_PHOTO_SIZE = 100;
-const MIN_PHOTO_SIZE = 25;
-let currentEffect = DEFAULT_EFFECT;
 
 const rangesSliderContainer = document.querySelector('.effect-level');
 const rangesSlider = document.querySelector('.effect-level__slider');
@@ -64,16 +64,18 @@ const valueScale = document.querySelector('.scale__control--value');
 
 const image = document.querySelector('.img-upload__preview img');
 
-export const resetDefault = () => {
+let currentEffect = DEFAULT_EFFECT;
+
+const resetDefault = () => {
   rangesSliderContainer.classList.add('hidden');
-  valueScale.value = '100%';
+  valueScale.value = `${MAX_PHOTO_SIZE}%`;
   image.style.cssText = 'transform: scale(1); filter: none';
 };
 
 smaller.addEventListener('click', () => {
   const value = parseInt(valueScale.value, 10);
   if (value > MIN_PHOTO_SIZE) {
-    valueScale.value = `${value - 25}%`;
+    valueScale.value = `${value - MIN_PHOTO_SIZE}%`;
     image.style.cssText += `transform: scale(${parseInt(valueScale.value, 10) / 100})`;
   }
 });
@@ -81,7 +83,7 @@ smaller.addEventListener('click', () => {
 bigger.addEventListener('click', () => {
   const value = parseInt(valueScale.value, 10);
   if (value < MAX_PHOTO_SIZE) {
-    valueScale.value = `${value + 25}%`;
+    valueScale.value = `${value + MIN_PHOTO_SIZE}%`;
     image.style.cssText += `transform: scale(${parseInt(valueScale.value, 10) / 100})`;
   }
 });
@@ -142,3 +144,5 @@ noUiSlider.create(rangesSlider, {
 
 effectsList.addEventListener ('click', onEffectsListClick);
 rangesSlider.noUiSlider.on('update', onRangeSliderUpdate);
+
+export {resetDefault};

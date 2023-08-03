@@ -1,4 +1,5 @@
 import {debounce} from './util.js';
+
 const picturesContainer = document.querySelector('.pictures');
 const fragment = document.createDocumentFragment();
 const cardTemplate = document
@@ -23,7 +24,7 @@ const resetPhotos = () => {
   });
 };
 
-export const renderPictures = (data) => {
+const renderPictures = (data) => {
   resetPhotos();
   data.forEach((cardObj) => {
     fragment.appendChild(fillCardTemplate(cardObj));
@@ -31,4 +32,6 @@ export const renderPictures = (data) => {
   picturesContainer.appendChild(fragment);
 };
 
-export const renderPicturesWithDebounce = debounce(renderPictures);
+const renderPicturesWithDebounce = debounce(renderPictures);
+
+export {renderPictures, renderPicturesWithDebounce};

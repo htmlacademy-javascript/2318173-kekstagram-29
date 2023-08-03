@@ -8,9 +8,9 @@ const bigPicture = document.querySelector('.big-picture');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
 const commentsCount = bigPicture.querySelector('.comments-count');
 const commentsShow = bigPicture.querySelector('.comments-show');
-const bigPictureModal = document.querySelector('.big-picture');
 const picturesContainer = document.querySelector('.pictures');
-const bigPictureClose = bigPictureModal.querySelector('.big-picture__cancel');
+const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
+const body = document.body;
 
 let loadingStep;
 
@@ -50,8 +50,8 @@ const onCommentsLoaderClick = () => {
 };
 
 function openBigPicture () {
-  bigPictureModal.classList.remove('hidden');
-  document.querySelector('body').classList.add('modal-open');
+  bigPicture.classList.remove('hidden');
+  body.classList.add('modal-open');
 
   document.addEventListener('keydown', onDocumentKeydown);
   bigPictureClose.addEventListener('click', onBigPictureCloseClick);
@@ -59,8 +59,8 @@ function openBigPicture () {
 }
 
 function closeBigPicture() {
-  bigPictureModal.classList.add('hidden');
-  document.querySelector('body').classList.remove('modal-open');
+  bigPicture.classList.add('hidden');
+  body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onDocumentKeydown);
   bigPictureClose.removeEventListener('click', onBigPictureCloseClick);
