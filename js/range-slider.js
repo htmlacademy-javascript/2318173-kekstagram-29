@@ -1,5 +1,6 @@
 const MAX_PHOTO_SIZE = 100;
 const MIN_PHOTO_SIZE = 25;
+const ZOOM_STEP = 25;
 
 const EFFECTS = [
   {
@@ -75,7 +76,7 @@ const resetDefault = () => {
 smaller.addEventListener('click', () => {
   const value = parseInt(valueScale.value, 10);
   if (value > MIN_PHOTO_SIZE) {
-    valueScale.value = `${value - MIN_PHOTO_SIZE}%`;
+    valueScale.value = `${value - ZOOM_STEP}%`;
     image.style.cssText += `transform: scale(${parseInt(valueScale.value, 10) / 100})`;
   }
 });
@@ -83,7 +84,7 @@ smaller.addEventListener('click', () => {
 bigger.addEventListener('click', () => {
   const value = parseInt(valueScale.value, 10);
   if (value < MAX_PHOTO_SIZE) {
-    valueScale.value = `${value + MIN_PHOTO_SIZE}%`;
+    valueScale.value = `${value + ZOOM_STEP}%`;
     image.style.cssText += `transform: scale(${parseInt(valueScale.value, 10) / 100})`;
   }
 });
